@@ -1,0 +1,25 @@
+{
+  "name": "obj-memory-cache",
+  "version": "0.0.1",
+  "description": "A simple in memory cache that can watch files, or expire at a set time",
+  "author": "AspieSoft",
+  "repository": {
+    "url": "git://github.com/aspiesoft/obj-memory-cache"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "keywords": [
+    "memory",
+    "cache",
+    "watch",
+    "listen",
+    "expire",
+    "object"
+  ],
+  "optionalDependencies": {
+    "chokidar": "^3.3.1"
+  },
+  "dependencies": {
+    "lzutf8": "^0.5.5"
+  }
+}

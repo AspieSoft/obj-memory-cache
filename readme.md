@@ -1,4 +1,4 @@
-##Object Memory Cache
+## Object Memory Cache
 
 This cache stores JSON objects, and strings into a js object.
 Objects are stringified before storage, and parsed when retrieved.
@@ -13,7 +13,7 @@ When you listen for file changes, the cache items listening for that file change
 
 Note: listening for file changes requires the chokidar npm module
 
-###Setup
+### Setup
 
 ```js
 const memoryCache = require('obj-memory-cache');
@@ -30,7 +30,7 @@ memoryCache.cacheDevelopment();
 memoryCache.cacheDevelopment(false);
 ```
 
-###Usage
+### Usage
 
 ```js
 function getData(){

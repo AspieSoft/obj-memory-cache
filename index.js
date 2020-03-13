@@ -1,3 +1,5 @@
+// In God We Trust
+
 const path = require('path');
 LZUTF8 = require('lzutf8');
 const chokidar = requireOptional('chokidar');

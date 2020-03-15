@@ -1,5 +1,13 @@
 ## Object Memory Cache
 
+![npm](https://img.shields.io/npm/v/obj-memory-cache)
+
+![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/obj-memory-cache)
+
+![NPM](https://img.shields.io/npm/l/obj-memory-cache)
+
+![npm](https://img.shields.io/npm/dw/obj-memory-cache)
+
 This cache stores JSON objects, and strings into a js object.
 Objects are stringified before storage, and parsed when retrieved.
 Before storage, this module uses another npm module (lzutf8) to compress the string and reduce storage.
@@ -12,6 +20,12 @@ You can also watch a file (or directory) for changes, or watch for when a file i
 When you listen for file changes, the cache items listening for that file change are removed.
 
 Note: listening for file changes requires the chokidar npm module
+
+### Installation
+
+```shell script
+npm install obj-memory-cache
+```
 
 ### Setup
 

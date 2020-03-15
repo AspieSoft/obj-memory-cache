@@ -1,11 +1,8 @@
 ## Object Memory Cache
 
 ![npm](https://img.shields.io/npm/v/obj-memory-cache)
-
 ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/obj-memory-cache)
-
 ![NPM](https://img.shields.io/npm/l/obj-memory-cache)
-
 ![npm](https://img.shields.io/npm/dw/obj-memory-cache)
 
 This cache stores JSON objects, and strings into a js object.

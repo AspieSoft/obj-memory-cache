@@ -1,12 +1,16 @@
 ## Object Memory Cache
 
 ![npm](https://img.shields.io/npm/v/obj-memory-cache)
-
 ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/obj-memory-cache)
-
+![GitHub top language](https://img.shields.io/github/languages/top/aspiesoft/obj-memory-cache)
 ![NPM](https://img.shields.io/npm/l/obj-memory-cache)
 
 ![npm](https://img.shields.io/npm/dw/obj-memory-cache)
+![npm](https://img.shields.io/npm/dm/obj-memory-cache)
+![GitHub last commit](https://img.shields.io/github/last-commit/aspiesoft/obj-memory-cache)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/aspiesoft/obj-memory-cache)
+
+[![paypal](https://img.shields.io/badge/buy%20me%20a%20coffee-paypal-blue)](http://buymeacoffee.aspiesoft.com/)
 
 This cache stores JSON objects, and strings into a js object.
 Objects are stringified before storage, and parsed when retrieved.

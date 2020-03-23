@@ -32,11 +32,11 @@ function getCache(filePath){
     if(cache && (new Date().getTime()) <= cache.cache.expire){
         return decompressStr(cache.file);
     }else if(cache){Cache.delete(filePath);}
-    return false;
+    return undefined;
 }
 
 function setCache(filePath, data, options){
-    if(!cacheDevelopment && process.env.NODE_ENV !== 'production'){return false;}
+    if(!cacheDevelopment && process.env.NODE_ENV !== 'production'){return undefined;}
     if(!Cache.has(filePath)){
         data = compressStr(data);
         if(!data){return;}
@@ -53,6 +53,15 @@ function setCache(filePath, data, options){
         Cache.set(filePath, {file: data, cache: cacheData});
     }
 }
+
+function removeCache(filePath){
+    if(Cache.has(filePath)){Cache.delete(filePath);}
+}
+
+function clearCache(){
+    Cache.clear();
+}
+
 
 setInterval(function(){
     Cache.forEach((file, filePath) => {
@@ -118,6 +127,8 @@ module.exports = (() => {
     };
     exports.get = getCache;
     exports.set = setCache;
+    exports.delete = removeCache;
+    exports.clear = clearCache;
     exports.watch = watchFiles;
     exports.cacheDevelopment = function(cache = true){cacheDevelopment = cache;};
     return exports;

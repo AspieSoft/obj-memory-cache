@@ -7,10 +7,10 @@ const chokidar = requireOptional('chokidar');
 function requireOptional(path){
     try{
         return require(path);
-    }catch(e){return false;}
+    }catch(e){return undefined;}
 }
 
-const Cache = {};
+const Cache = new Map();
 
 let cacheDevelopment = false;
 
@@ -28,15 +28,16 @@ function decompressStr(str){
 }
 
 function getCache(filePath){
-    if(Cache[filePath] && (new Date().getTime()) <= Cache[filePath].cache.expire){
-        return decompressStr(Cache[filePath].file);
-    }else if(Cache[filePath]){delete Cache[filePath];}
+    let cache = Cache.get(filePath);
+    if(cache && (new Date().getTime()) <= cache.cache.expire){
+        return decompressStr(cache.file);
+    }else if(cache){Cache.delete(filePath);}
     return false;
 }
 
 function setCache(filePath, data, options){
     if(!cacheDevelopment && process.env.NODE_ENV !== 'production'){return false;}
-    if(!Cache[filePath]){
+    if(!Cache.has(filePath)){
         data = compressStr(data);
         if(!data){return;}
         let cacheData = {};
@@ -49,23 +50,23 @@ function setCache(filePath, data, options){
             options.listen = compressStr(options.listen);
             cacheData.listen = options.listen;
         }
-        Cache[filePath] = {file: data, cache: cacheData};
+        Cache.set(filePath, {file: data, cache: cacheData});
     }
 }
 
 setInterval(function(){
-    forEach(Cache, (file, filePath) => {
-        if(file.cache.expire && (new Date().getTime()) > file.cache.expire){delete Cache[filePath];}
+    Cache.forEach((file, filePath) => {
+        if(file.cache.expire && (new Date().getTime()) > file.cache.expire){Cache.delete(filePath);}
     });
 }, toTimeMillis('10m'));
 
 
 function clearCacheOnFilePath(filePath){
     filePath = path.resolve(filePath).toString().replace(/\\/g, '/');
-    forEach(Cache, (file, path) => {
+    Cache.forEach((file, path) => {
         if(file.cache.listen){
             let listenFiles = decompressStr(file.cache.listen);
-            if(listenFiles.includes(filePath) || listenFiles.find(file => filePath.startsWith(file))){delete Cache[path];}
+            if(listenFiles.includes(filePath) || listenFiles.find(file => filePath.startsWith(file))){Cache.delete(path);}
         }
     });
 }
@@ -75,20 +76,6 @@ function watchFiles(files){
     chokidar.watch(files, {ignoreInitial: true}).on('change', clearCacheOnFilePath).on('add', clearCacheOnFilePath).on('unlink', clearCacheOnFilePath);
 }
 
-
-function forEach(obj, callback){
-    if(typeof obj === 'string'){obj = [obj];}
-    if(obj && typeof obj === 'object'){
-        let keys = Object.keys(obj);
-        for(let i = 0; i < keys.length; i++){
-            callback(obj[keys[i]], keys[i], obj);
-        }
-    }else if(obj && Array.isArray(obj)){
-        for(let i = 0; i < obj.length; i++){
-            callback(obj[i], i, obj);
-        }
-    }
-}
 
 function toNumber(str){
     if(typeof str === 'number'){return str;}

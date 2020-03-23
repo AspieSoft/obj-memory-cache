@@ -1,6 +1,6 @@
 {
   "name": "obj-memory-cache",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "A simple in memory cache that can watch files, or expire at a set time",
   "license": "MIT",
   "author": "AspieSoft",
@@ -18,7 +18,7 @@
     "object",
     "nodejs"
   ],
-  "optionalDependencies": {
+  "optionalPeerDependencies": {
     "chokidar": "^3.3.1"
   },
   "dependencies": {

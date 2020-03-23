@@ -12,7 +12,7 @@
 
 [![paypal](https://img.shields.io/badge/buy%20me%20a%20coffee-paypal-blue)](http://buymeacoffee.aspiesoft.com/)
 
-This cache stores JSON objects, and strings into a js object.
+This cache stores JSON objects, and strings into a javascript MAP.
 Objects are stringified before storage, and parsed when retrieved.
 Before storage, this module uses another npm module (lzutf8) to compress the string and reduce storage.
 

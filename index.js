@@ -1,8 +1,7 @@
 // In God We Trust
 
 const path = require('path');
-LZUTF8 = require('lzutf8');
-const chokidar = requireOptional('chokidar');
+const LZUTF8 = require('lzutf8');
 
 function requireOptional(path){
     try{
@@ -72,7 +71,8 @@ function clearCacheOnFilePath(filePath){
 }
 
 function watchFiles(files){
-    if(!chokidar){console.warn('Watch requires optional dependency: chokidar'); return false;}
+    const chokidar = requireOptional('chokidar');
+    if(!chokidar){console.warn('obj-memory-cache Watch requires optional dependency: chokidar. run: npm install chokidar'); return false;}
     chokidar.watch(files, {ignoreInitial: true}).on('change', clearCacheOnFilePath).on('add', clearCacheOnFilePath).on('unlink', clearCacheOnFilePath);
 }
 

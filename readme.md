@@ -28,6 +28,9 @@ Note: listening for file changes requires the chokidar npm module
 
 ```shell script
 npm install obj-memory-cache
+
+# or without optional file watching
+npm install obj-memory-cache --no-optional
 ```
 
 ### Setup

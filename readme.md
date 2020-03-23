@@ -8,7 +8,6 @@
 ![npm](https://img.shields.io/npm/dw/obj-memory-cache)
 ![npm](https://img.shields.io/npm/dm/obj-memory-cache)
 ![GitHub last commit](https://img.shields.io/github/last-commit/aspiesoft/obj-memory-cache)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/aspiesoft/obj-memory-cache)
 
 [![paypal](https://img.shields.io/badge/buy%20me%20a%20coffee-paypal-blue)](http://buymeacoffee.aspiesoft.com/)
 

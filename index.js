@@ -17,12 +17,17 @@ let cacheDevelopment = false;
 function compressStr(str){
     if(!str){return undefined;}
     if(typeof str === 'object' || Array.isArray(str)){try{str = JSON.stringify(str);}catch(e){return null;}}
-    try{return LZUTF8.compress(str, {outputEncoding: 'StorageBinaryString'});}catch(e){return null;}
+    try{str = LZUTF8.compress(str, {outputEncoding: 'Base64'});}catch(e){return null;}
+    try{str = LZUTF8.compress(str, {outputEncoding: 'StorageBinaryString'});}catch(e){return null;}
+    try{str = LZUTF8.compress(str, {outputEncoding: 'Buffer'});}catch(e){return null;}
+    return str;
 }
 
 function decompressStr(str){
     if(!str){return undefined;}
+    if(typeof str === 'object'){try{str = LZUTF8.decompress(str, {inputEncoding: 'Buffer'});}catch(e){return null;}}
     try{str = LZUTF8.decompress(str, {inputEncoding: 'StorageBinaryString'});}catch(e){return null;}
+    try{str = LZUTF8.decompress(str, {inputEncoding: 'Base64'});}catch(e){return null;}
     try{str = JSON.parse(str);}catch(e){}
     return str;
 }

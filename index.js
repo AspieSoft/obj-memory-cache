@@ -1,140 +1,50 @@
 // In God We Trust
 
-const path = require('path');
-const LZUTF8 = require('lzutf8');
-const chokidar = requireOptional('chokidar');
+const cache = require('./cache');
 
-function requireOptional(path){
-    try{
-        return require(path);
-    }catch(e){return undefined;}
+const Cache = newCache();
+
+//todo: add memory limit option (to filter out results early) (base on last used, and most used)
+//todo: add option to keep separate cache for most common garbed resources (make false option avoid counting) (make number option keep a number of items) (make true option use a default number)
+
+function newCache(options = {}){
+    const Cache = new Map();
+    const cacheData = {memoryUsage: 0};
+    const cacheOptions = options;
+    Object.freeze(cacheOptions);
+    if(cacheOptions.watch){cache.watch(Cache, cacheData, cacheOptions, cacheOptions.watch);}
+    cache.checkInterval(Cache, cacheData, cacheOptions);
+    return {
+        get: function(filePath){
+            return cache.get(Cache, cacheData, cacheOptions, filePath);
+        },
+        set: function(filePath, data, options){
+            return cache.set(Cache, cacheData, cacheOptions, filePath, data, options);
+        },
+        delete: function(filePath){
+            return cache.delete(Cache, cacheData, cacheOptions, filePath);
+        },
+        clear: function(){
+            return cache.clear(Cache, cacheData, cacheOptions);
+        },
+        watch: function(files){
+            return cache.watch(Cache, cacheData, cacheOptions, files);
+        },
+    };
 }
-
-const Cache = new Map();
-
-let cacheDevelopment = false;
-
-function compressStr(str){
-    if(!str){return undefined;}
-    if(typeof str === 'object' || Array.isArray(str)){try{str = JSON.stringify(str);}catch(e){return null;}}
-    try{str = LZUTF8.compress(str, {outputEncoding: 'Base64'});}catch(e){return null;}
-    try{str = LZUTF8.compress(str, {outputEncoding: 'StorageBinaryString'});}catch(e){return null;}
-    try{str = LZUTF8.compress(str, {outputEncoding: 'Buffer'});}catch(e){return null;}
-    return str;
-}
-
-function decompressStr(str){
-    if(!str){return undefined;}
-    if(typeof str === 'object'){try{str = LZUTF8.decompress(str, {inputEncoding: 'Buffer'});}catch(e){return null;}}
-    try{str = LZUTF8.decompress(str, {inputEncoding: 'StorageBinaryString'});}catch(e){return null;}
-    try{str = LZUTF8.decompress(str, {inputEncoding: 'Base64'});}catch(e){return null;}
-    try{str = JSON.parse(str);}catch(e){}
-    return str;
-}
-
-function getCache(filePath){
-    let cache = Cache.get(filePath);
-    if(cache && (new Date().getTime()) <= cache.cache.expire){
-        return decompressStr(cache.file);
-    }else if(cache){Cache.delete(filePath);}
-    return undefined;
-}
-
-function setCache(filePath, data, options){
-    if(!cacheDevelopment && process.env.NODE_ENV !== 'production'){return undefined;}
-    if(!Cache.has(filePath)){
-        data = compressStr(data);
-        if(!data){return;}
-        let cacheData = {};
-        if(options && (options.expire || options.exp)){cacheData.expire = (new Date().getTime())+toTimeMillis(options.expire || options.exp);}
-        if(options && options.listen){
-            if(!Array.isArray(options.listen)){options.listen = [options.listen];}
-            options.listen = options.listen.map(filePath => {
-                return path.resolve(filePath).toString().replace(/\\/g, '/');
-            });
-            options.listen = compressStr(options.listen);
-            cacheData.listen = options.listen;
-        }
-        Cache.set(filePath, {file: data, cache: cacheData});
-    }
-}
-
-function removeCache(filePath){
-    if(Cache.has(filePath)){Cache.delete(filePath);}
-}
-
-function clearCache(){
-    Cache.clear();
-}
-
-
-setInterval(function(){
-    Cache.forEach((file, filePath) => {
-        if(file.cache.expire && (new Date().getTime()) > file.cache.expire){Cache.delete(filePath);}
-    });
-}, toTimeMillis('10m'));
-
-
-function clearCacheOnFilePath(filePath){
-    filePath = path.resolve(filePath).toString().replace(/\\/g, '/');
-    Cache.forEach((file, path) => {
-        if(file.cache.listen){
-            let listenFiles = decompressStr(file.cache.listen);
-            if(listenFiles.includes(filePath) || listenFiles.find(file => filePath.startsWith(file))){Cache.delete(path);}
-        }
-    });
-}
-
-function watchFiles(files){
-    if(!chokidar){console.warn('obj-memory-cache Watch requires optional dependency: chokidar. run: npm install chokidar'); return false;}
-    chokidar.watch(files, {ignoreInitial: true}).on('change', clearCacheOnFilePath).on('add', clearCacheOnFilePath).on('unlink', clearCacheOnFilePath);
-}
-
-
-function toNumber(str){
-    if(typeof str === 'number'){return str;}
-    return Number(str.replace(/[^0-9.]/g, '').split('.', 2).join('.'));
-}
-
-function toTimeMillis(str){
-    if(typeof str === 'number'){return Number(str);}
-    if(!str || typeof str !== 'string' || str.trim() === ''){return NaN;}
-    if(str.endsWith('h')){
-        return toNumber(str)*3600000;
-    }else if(str.endsWith('m')){
-        return toNumber(str)*60000;
-    }else if(str.endsWith('s')){
-        return toNumber(str)*1000;
-    }else if(str.endsWith('D')){
-        return toNumber(str)*86400000;
-    }else if(str.endsWith('M')){
-        return toNumber(str)*2628000000;
-    }else if(str.endsWith('Y')){
-        return toNumber(str)*31536000000;
-    }else if(str.endsWith('DE')){
-        return toNumber(str)*315360000000;
-    }else if(str.endsWith('C') || this.endsWith('CE')){
-        return toNumber(str)*3153600000000;
-    }else if(str.endsWith('ms')){
-        return toNumber(str);
-    }else if(str.endsWith('us') || this.endsWith('mic')){
-        return toNumber(str)*0.001;
-    }else if(str.endsWith('ns')){
-        return toNumber(str)*0.000001;
-    }
-    return toNumber(str);
-}
-
 
 module.exports = (() => {
-    let exports = function(options){
-        if(options.watch){watchFiles(options.watch);}
+    let exports = function(options = {}){
+        if(options.watch){
+            if(options.watch){Cache.watch(options.watch);}
+        }
     };
-    exports.get = getCache;
-    exports.set = setCache;
-    exports.delete = removeCache;
-    exports.clear = clearCache;
-    exports.watch = watchFiles;
-    exports.cacheDevelopment = function(cache = true){cacheDevelopment = cache;};
+    exports.newCache = newCache;
+    exports.get = Cache.get;
+    exports.set = Cache.set;
+    exports.delete = Cache.delete;
+    exports.clear = Cache.clear;
+    exports.watch = Cache.watch;
+    exports.cacheDevelopment = cache.cacheDevelopment;
     return exports;
 })();

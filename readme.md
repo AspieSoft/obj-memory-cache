@@ -59,7 +59,13 @@ function getData(){
     
     let data = {myJsonData: 'example data'};
     
+    // use global cache
     memoryCache.set('myCachePath', data, {expire: '10m'}); // 10 minutes
+
+    // build local cache
+    const localCache = memoryCache.newCache(options);
+    localCache.set('myCachePath', data, {expire: '10m'}); // does not effect global cache
+    // note: if you loose the var, that local cache is lost
     
     return data;
 }
@@ -81,11 +87,13 @@ function getFileData(filePath){
     return result;
 }
 
+// basic cache functions (same for global cache and local cache) (example: memoryCache.get(), localCache.get())
+
 // get item from cache
 cache.get('index');
 
 // set/add item to cache
-cache.get('index', {data: 'my data'} || 'my data', {/* options */});
+cache.set('index', {data: 'my data'} || 'my data', {/* options */});
 
 // remove item from cache
 cache.delete('index');

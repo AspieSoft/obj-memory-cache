@@ -22,8 +22,7 @@ Every 10 minutes, the entire cache is checked for expired items, to remove unuse
 You can also watch a file (or directory) for changes, or watch for when a file is added.
 When you listen for file changes, the cache items listening for that file change are removed.
 
-Note: listening for file changes requires the chokidar npm module
-
+**Note: listening for file changes requires the chokidar npm module**
 ### Installation
 
 ```shell script
@@ -103,5 +102,4 @@ cache.clear();
 
 // watch files for cache
 cache.watch([/* list of file paths */]);
-
 ```

@@ -7,7 +7,6 @@
 
 ![npm](https://img.shields.io/npm/dw/obj-memory-cache)
 ![npm](https://img.shields.io/npm/dm/obj-memory-cache)
-![GitHub last commit](https://img.shields.io/github/last-commit/aspiesoft/obj-memory-cache)
 
 [![paypal](https://img.shields.io/badge/buy%20me%20a%20coffee-paypal-blue)](https://buymeacoffee.aspiesoft.com/)
 
@@ -26,7 +25,7 @@ When you listen for file changes, the cache items listening for that file change
 ### Installation
 
 ```shell script
-npm install obj-memory-cache
+npm install @aspiesoft/obj-memory-cache
 
 # to add optional file watching
 npm install chokidar
@@ -35,7 +34,7 @@ npm install chokidar
 ### Setup
 
 ```js
-const memoryCache = require('obj-memory-cache');
+const memoryCache = require('@aspiesoft/obj-memory-cache');
 
 // optional (to watch files for updates) (requires chokidar npm module)
 memoryCache({watch: __dirname});

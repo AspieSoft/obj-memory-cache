@@ -1,9 +1,13 @@
 {
   "name": "@aspiesoft/obj-memory-cache",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A simple in memory cache that can watch files, or expire at a set time.",
   "license": "MIT",
   "author": "AspieSoft",
+  "scripts": {
+    "test": "node app.js",
+    "build": "node build.js"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/aspiesoft/obj-memory-cache"
@@ -22,9 +26,9 @@
     "chokidar": "^3.3.1"
   },
   "dependencies": {
-    "lzutf8": "^0.5.5"
+    "lzutf8": "^0.5.6"
   },
   "devDependencies": {
-    "miniforge-js": "^0.2.5"
+    "miniforge-js": "^1.0.0"
   }
 }

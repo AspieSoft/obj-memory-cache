@@ -1,4 +1,4 @@
-## Object Memory Cache
+# Object Memory Cache
 
 ![npm](https://img.shields.io/npm/v/obj-memory-cache)
 ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/obj-memory-cache)
@@ -8,7 +8,7 @@
 ![npm](https://img.shields.io/npm/dw/obj-memory-cache)
 ![npm](https://img.shields.io/npm/dm/obj-memory-cache)
 
-[![paypal](https://img.shields.io/badge/buy%20me%20a%20coffee-paypal-blue)](https://buymeacoffee.aspiesoft.com/from-npm/obj-memory-cache)
+[![paypal](https://img.shields.io/badge/buy%20me%20a%20coffee-paypal-blue)](https://buymeacoffee.aspiesoft.com)
 
 This cache stores JSON objects, and strings into a javascript Map.
 Objects are stringified before storage, and parsed when retrieved.
@@ -22,7 +22,8 @@ You can also watch a file (or directory) for changes, or watch for when a file i
 When you listen for file changes, the cache items listening for that file change are removed.
 
 **Note: listening for file changes requires the chokidar npm module**
-### Installation
+
+## Installation
 
 ```shell script
 npm install @aspiesoft/obj-memory-cache
@@ -31,7 +32,7 @@ npm install @aspiesoft/obj-memory-cache
 npm install chokidar
 ```
 
-### Setup
+## Setup
 
 ```js
 const memoryCache = require('@aspiesoft/obj-memory-cache');
@@ -48,15 +49,15 @@ memoryCache.cacheDevelopment();
 memoryCache.cacheDevelopment(false);
 ```
 
-### Usage
+## Usage
 
 ```js
 function getData(){
     let cache = memoryCache.get('myCachePath');
     if(cache){return cache;}
-    
+
     let data = {myJsonData: 'example data'};
-    
+
     // use global cache
     memoryCache.set('myCachePath', data, {expire: '10m'}); // 10 minutes
 
@@ -64,24 +65,24 @@ function getData(){
     const localCache = memoryCache.newCache(options);
     localCache.set('myCachePath', data, {expire: '10m'}); // does not effect global cache
     // note: if you loose the var, that local cache is lost
-    
+
     return data;
 }
 
 function getFileData(filePath){
     let cache = memoryCache.get(filePath);
     if(cache){return cache;}
-    
+
     let jsonData = require(filePath);
-    
+
     let defaultJsonData = require('default/data/file/path');
-    
+
     let result = {};
 
     Object.assign(result, defaultJsonData, jsonData);
-    
+
     memoryCache.set(filePath, result, {listen: [filePath, 'default/data/file/path']});
-    
+
     return result;
 }
 

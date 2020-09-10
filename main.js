@@ -1,9 +1,14 @@
+// In God We Trust
+
 const cache = require('./src/cache');
 
 const Cache = newCache();
 
-//todo: add memory limit option (to filter out results early) (base on last used, and most used)
-//todo: add option to keep separate cache for most common garbed resources (make false option avoid counting) (make number option keep a number of items) (make true option use a default number)
+	//todo: add memory limit option (to filter out results early) (base on last used, and most used)
+	// may use .sort() method to remove correct objects in cache
+	// may add global memory limit, and separate local memory limit options
+	// may add function to detect memory usage, and separate function to sort items by usage (how often, and when last used) (add function to cache.js)
+	//todo: add option to keep separate cache for most common garbed resources (make false option avoid counting) (make number option keep a number of items) (make true option use a default number)
 
 function newCache(options = {}){
 	const Cache = new Map();

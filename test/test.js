@@ -1,6 +1,6 @@
 function runTest(memoryCache){
 
-	memoryCache();
+	memoryCache({watch: false});
 
 }
 

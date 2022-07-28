@@ -1,6 +1,6 @@
 {
   "name": "@aspiesoft/obj-memory-cache",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "A simple in memory cache that can watch files, or expire at a set time.",
   "license": "MIT",
   "author": "AspieSoft",
